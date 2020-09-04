@@ -26,7 +26,7 @@
 const char PINNUMBER[] = SECRET_PINNUMBER;
 
 // initialize the library instance
-NB nbAccess;     // include a 'true' parameter to enable debugging
+NB nbAccess(true);     // include a 'true' parameter to enable debugging
 NBScanner scannerNetworks;
 NBModem modemTest;
 
@@ -52,7 +52,7 @@ void setup() {
   // Start module
   // If your SIM has PIN, pass it as a parameter of begin() in quotes
   while (!connected) {
-    if (nbAccess.begin(PINNUMBER) == NB_READY) {
+    if (nbAccess.begin(PINNUMBER, "lpwa.pelion", "streamip", "streamip", false, true) == NB_READY) {
       connected = true;
     } else {
       Serial.println("Not connected");

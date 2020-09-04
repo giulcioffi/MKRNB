@@ -33,4 +33,6 @@
 
 #include "NBFileUtils.h"
 
+#include "NBHttpUtils.h"
+
 #endif
