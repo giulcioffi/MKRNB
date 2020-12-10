@@ -26,12 +26,12 @@ GPRS gprs;
 NBFileUtils fileUtils(false);
 
 // URL, path and port (for example: example.org)
-char server[] = "www.arduino.cc"; //google.com
-char path[] = "/asciilogo.txt";
-int port = 80; // port 80 is the default for HTTP
+char server[] = "www.google.com"; //"107-systems.org"; //google.com
+char path[] = "/"; //"/ota/wifi1010-https-local.ota";
+int port = 443; // port 80 is the default for HTTP
 
 // An existing file
-constexpr char* filename { "get.ffs" };
+constexpr char* filename { "get.bin" };
 
 
 // Read bloack size
@@ -64,22 +64,40 @@ void setup() {
     }
   }
   fileUtils.begin(false);
+  
   httpClient.eraseAllCertificates();
   httpClient.setUserRoots(NB_ROOT_CERTS, NB_NUM_ROOT_CERTS);
   httpClient.setRootCertificate();
+  httpClient.setTrustedRoot("Let_s_Encrypt_Authority_X3");
   
   httpClient.enableSSL();
   httpClient.configServer(server, port);
+  /*
+  delay(5000);
+  int size = fileUtils.listFile(filename);
+  httpClient.deleteFile(filename);
+  */
+  delay(5000);
   httpClient.get(path, filename);
+  unsigned long start_time=millis();
+  while((millis()-start_time)<15000) {
+    httpClient.responseStatus();
+    digitalWrite(LED_BUILTIN,HIGH);
+    delay(100);
+    digitalWrite(LED_BUILTIN,LOW);
+    delay(100);
+  }
+  delay(15000);
+  httpClient.read(filename);
 
 
 }
 
 void loop() {
   if (httpClient.responseStatus()) {
-    Serial.println("received");
+    Serial.println("URC received");
 
-    readFile();
+    httpClient.read(filename);
     while (1);
   }
 }

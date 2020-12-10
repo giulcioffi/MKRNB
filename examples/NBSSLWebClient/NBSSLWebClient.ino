@@ -25,11 +25,11 @@ const char PINNUMBER[]     = SECRET_PINNUMBER;
 // initialize the library instance
 NBSSLClient client;
 GPRS gprs;
-NB nbAccess;
+NB nbAccess(true);
 
 // URL, path and port (for example: arduino.cc)
-char server[] = "arduino.cc";
-char path[] = "/asciilogo.txt";
+char server[] = "107-systems.org"; //google.com
+char path[] = "/ota/wifi1010-https-local.ota";
 int port = 443; // port 443 is the default for HTTPS
 
 void setup() {
@@ -46,7 +46,7 @@ void setup() {
   // After starting the modem with NB.begin()
   // attach to the GPRS network with the APN, login and password
   while (!connected) {
-    if ((nbAccess.begin(PINNUMBER) == NB_READY) &&
+    if ((nbAccess.begin(PINNUMBER, "lpwa.pelion", "streamip", "streamip", false, true) == NB_READY) &&
         (gprs.attachGPRS() == GPRS_READY)) {
       connected = true;
     } else {

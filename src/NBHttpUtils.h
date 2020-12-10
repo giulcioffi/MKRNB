@@ -40,6 +40,7 @@ public:
   virtual void disableSSL();
   virtual void configServer(const char* url, int httpport);
   virtual void head(const char* path, const char* filename);
+  //virtual void deleteFile(const char* filename);
   virtual void get(const char* path, const char* filename);
   virtual void read(const char* filename);
   virtual void del(const char* path, const char* filename);
